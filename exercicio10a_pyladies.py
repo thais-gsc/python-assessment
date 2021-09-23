@@ -9,7 +9,11 @@
 from bs4 import BeautifulSoup
 import requests, lxml
 
-html = requests.get("http://brasil.pyladies.com/about/").text
+html = requests.get("http://brasil.pyladies.com/about/")
+
+html.encoding = html.apparent_encoding
+
+html = html.text
 
 soup = BeautifulSoup(html, "lxml")
 
@@ -26,12 +30,12 @@ for texto in textos:
     palavras = texto.split()
     for i in range(len(palavras)):
         lista_palavras.append(palavras[i])
-        if "ladies" in palavras[i]:
+        if "ladies" in (palavras[i]).casefold():
             contador += 1
 
 palavras_unicas = []
 for palavra in lista_palavras:
-    if lista_palavras.count(palavra) == 1:
+    if lista_palavras.count(palavra.casefold()) == 1:
         palavras_unicas.append(palavra)
 
 
